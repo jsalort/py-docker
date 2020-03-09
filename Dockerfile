@@ -1,5 +1,13 @@
 FROM jsalort/texlive2019:latest
 
+# Install useful dependencies
+
+USER root
+RUN apt install -y libgl1-mesa-dev gfortran 
+
+# Install Anaconda in liveuser home
+
+USER liveuser
 COPY py38.yml /home/liveuser/
 SHELL ["/bin/bash", "-c"]
 
@@ -13,6 +21,8 @@ RUN source /home/liveuser/anaconda3/etc/profile.d/conda.sh && \
     python -m ipykernel install --user && \
     jupyter lab build && \
     rm -f /home/liveuser/.bashrc
+
+# Set up environment
 
 ENV CONDA_SHLVL "2"
 ENV CONDA_PROMPT_MODIFIER "(py38)"
