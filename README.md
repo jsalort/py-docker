@@ -8,8 +8,8 @@ This dockerfile is published on [Docker Hub](https://hub.docker.com/repository/d
 
 To use it locally:
 ```bash
-$ docker pull jsalort/py38:2019.10
-$ docker run -it jsalort/py38:2019.10 python
+$ docker pull jsalort/py38:latest
+$ docker run -it jsalort/py38:latest python
 ```
 
 Or, to run a Jupyter Lab instance:

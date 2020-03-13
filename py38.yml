@@ -3,57 +3,78 @@ channels:
     - conda-forge
     - defaults
 dependencies:
-    - python==3.8
-    - conda
+# Infrastructure
+    - python>=3.8.0
+#    - conda
     - pip
+# Compilateurs
+    - gxx_linux-64
+    - gcc_linux-64
+    - gfortran_linux-64
+    - nodejs
+# Developer tools
     - git
+    - flake8
+    - black
+    - pytest
+    - pre-commit
+# IDE
+    - IPython
+    - qtconsole
+    - spyder
     - jupyterlab
     - jupyter_console
     - widgetsnbextension
     - ipympl
-    - nodejs
-    - qtconsole
-    - IPython
-    - spyder
+# General scientific package
     - numpy
     - matplotlib
     - scipy
-    - h5py
-    - cython
-    - numba
     - pandas
-    - scikit-image
-    - progressbar2
-    - aiohttp
-    - flake8
-    - filelock
-    - flask
-    - markdown
-    - Pillow
-    - sphinx
-    - opencv
-    - numpy_groupies
     - pint
-    - clint
-    - pyserial
-    - pyvisa
-    - pyvisa-py
     - pyqtgraph
-    - sphinx-argparse
-    - sphinx_rtd_theme
-    - sphinxcontrib-bibtex
-    - nbsphinx
-    - black
-    - pre-commit
+# Image processing
+    - Pillow
+    - scikit-image 
+    - opencv
+# HPC tools
+    - numba
+    - cython
+    - numpy_groupies
+# File formats
+    - h5py
+    - markdown
     - openpyxl
     - nptdms
-    - pytest
+# Documentation
+    - sphinx
+    - sphinx_rtd_theme
+    - nbsphinx
+    - sphinxcontrib-bibtex
+    - sphinx-argparse
+# Web
+    - aiohttp
+    - flask
+# Miscellaneous
+    - progressbar2
+    - filelock
+    - clint
+# Instrument control
+    - pyserial
+    - pyvisa-py
+    - pyvisa
     - pip:
+# Web (PIP)
         - aiohttp_jinja2
+        - flask_babel
+        - pymysql
+# Instrument control (PIP)
         - pydaqmx
         - nidaqmx
-        - llc
-        - bibtexparser
         - fluiddyn
         - fluidlab
         - pymanip
+# HPC tools
+        - llc
+# Documentation
+        - bibtexparser
