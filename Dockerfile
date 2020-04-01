@@ -25,7 +25,9 @@ RUN source /home/liveuser/anaconda3/etc/profile.d/conda.sh && \
     conda env create -f py38.yml -q && \
     conda activate py38 && \
     python -m ipykernel install --user && \
-    jupyter lab build
+    jupyter lab build && \
+    jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
+    jupyter labextension install jupyter-matplotlib
 
 RUN rm -f Anaconda3-2020.02-Linux-x86_64.sh py38.yml
 
