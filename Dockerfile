@@ -1,4 +1,4 @@
-FROM jsalort/texlive2019:latest
+FROM jsalort/texlive2020:latest
 MAINTAINER Julien Salort, julien.salort@ens-lyon.fr
 
 # Install libGL
