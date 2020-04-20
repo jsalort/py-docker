@@ -1,9 +1,15 @@
 FROM jsalort/texlive2020:latest
 MAINTAINER Julien Salort, julien.salort@ens-lyon.fr
 
-# Install libGL
+# Install libGL (used by Jupyter lab)
 USER root
-RUN apt install -y libgl1-mesa-dev
+RUN apt update && \
+    apt install -y libgl1-mesa-dev
+
+# Dependencies for Chromium (used by the betatim/notebook-as-pdf extension)
+RUN apt install -y libxcomposite1 libxcursor1 libxi6 libxtst6 libglib2.0-0 \
+                   libnss3 libxss1 libxrandr2 libasound2 libpangocairo-1.0-0 \
+                   libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0
 
 # Install Anaconda in liveuser home
 USER liveuser
@@ -27,7 +33,9 @@ RUN source /home/liveuser/anaconda3/etc/profile.d/conda.sh && \
     python -m ipykernel install --user && \
     jupyter lab build && \
     jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
-    jupyter labextension install jupyter-matplotlib
+    jupyter labextension install jupyter-matplotlib && \
+    python -m pip install notebook-as-pdf && \
+    pyppeteer-install
 
 RUN rm -f Anaconda3-2020.02-Linux-x86_64.sh py38.yml
 
@@ -39,7 +47,7 @@ RUN rm -f Anaconda3-2020.02-Linux-x86_64.sh py38.yml
 #CMD ["/bin/bash"]
 
 # Set environment similar to what conda activate does
-RUN rm .bashrc
+# RUN rm .bashrc
 ENV AS "/home/liveuser/anaconda3/envs/py38/bin/x86_64-conda_cos6-linux-gnu-as"
 ENV LDFLAGS "-Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,-rpath,/home/liveuser/anaconda3/envs/py38/lib -Wl,-rpath-link,/home/liveuser/anaconda3/envs/py38/lib -L/home/liveuser/anaconda3/envs/py38/lib"
 ENV AR "/home/liveuser/anaconda3/envs/py38/bin/x86_64-conda_cos6-linux-gnu-ar"
