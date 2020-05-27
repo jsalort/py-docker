@@ -1,68 +1,72 @@
 name: py38
 channels:
     - conda-forge
-    - defaults
 dependencies:
 # Infrastructure
-    - python>=3.8.0
-#    - conda
-    - pip
+    - conda-forge::python>=3.8.0
 # Compilateurs
-    - gxx_linux-64
-    - gcc_linux-64
-    - gfortran_linux-64
-    - nodejs
+    - conda-forge::compilers
+    - conda-forge::nodejs
 # Developer tools
-    - git
-    - flake8
-    - black
-    - pytest
-    - pre-commit
+    - conda-forge::git
+    - conda-forge::flake8
+    - conda-forge::black
+    - conda-forge::pytest
+    - conda-forge::pre-commit
+    - conda-forge::automake
 # IDE
-    - IPython
-    - qtconsole
-    - spyder
-    - jupyterlab
-    - jupyter_console
-    - widgetsnbextension
-    - ipympl
+    - conda-forge::IPython
+    - conda-forge::qtconsole
+    - conda-forge::spyder
+    - conda-forge::jupyterlab
+    - conda-forge::jupyter_console
+    - conda-forge::widgetsnbextension
+    - conda-forge::ipympl
 # General scientific package
-    - numpy
-    - matplotlib
-    - scipy
-    - pandas
-    - pint
-    - pyqtgraph
+    - conda-forge::numpy
+    - conda-forge::matplotlib
+    - conda-forge::scipy
+    - conda-forge::pandas
+    - conda-forge::pint
+    - conda-forge::pyqtgraph
 # Image processing
-    - Pillow
-    - scikit-image 
-    - opencv
+    - conda-forge::Pillow
+    - conda-forge::scikit-image 
+    - conda-forge::opencv
 # HPC tools
-    - numba
-    - cython
-    - numpy_groupies
+    - conda-forge::numba
+    - conda-forge::cython
+    - conda-forge::numpy_groupies
+    - conda-forge::fftw
 # File formats
-    - h5py
-    - markdown
-    - openpyxl
-    - nptdms
+    - conda-forge::h5py
+    - conda-forge::markdown
+    - conda-forge::openpyxl
+    - conda-forge::nptdms
+    - conda-forge::netcdf-fortran
 # Documentation
-    - sphinx
-    - sphinx_rtd_theme
-    - nbsphinx
-    - sphinxcontrib-bibtex
-    - sphinx-argparse
+    - conda-forge::sphinx
+    - conda-forge::sphinx_rtd_theme
+    - conda-forge::nbsphinx
+    - conda-forge::sphinxcontrib-bibtex
+    - conda-forge::sphinx-argparse
 # Web
-    - aiohttp
-    - flask
+    - conda-forge::aiohttp
+    - conda-forge::flask
+    - conda-forge::pyppeteer
+    - conda-forge::websockets
+    - conda-forge::pyee
+    - conda-forge::tqdm
+    - conda-forge::pypdf2
 # Miscellaneous
-    - progressbar2
-    - filelock
-    - clint
+    - conda-forge::progressbar2
+    - conda-forge::filelock
+    - conda-forge::clint
 # Instrument control
-    - pyserial
-    - pyvisa-py
-    - pyvisa
+    - conda-forge::pyserial
+    - conda-forge::pyvisa-py
+    - conda-forge::pyvisa
+    - pip
     - pip:
 # Web (PIP)
         - aiohttp_jinja2
@@ -76,5 +80,6 @@ dependencies:
         - pymanip
 # HPC tools
         - llc
+        - opencv-contrib-python
 # Documentation
         - bibtexparser

@@ -28,8 +28,11 @@ RUN chown liveuser:liveuser py38.yml
 
 USER liveuser
 RUN source /home/liveuser/anaconda3/etc/profile.d/conda.sh && \
-    conda env create -f py38.yml -q && \
+    conda create -n py38 -c conda-forge python=3.8 && \
     conda activate py38 && \
+    conda config --add channels conda-forge && \
+    conda config --set channel_priority strict && \
+    conda env update --file py38.yml && \
     python -m ipykernel install --user && \
     jupyter lab build && \
     jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
@@ -38,6 +41,12 @@ RUN source /home/liveuser/anaconda3/etc/profile.d/conda.sh && \
     pyppeteer-install
 
 RUN rm -f Anaconda3-2020.02-Linux-x86_64.sh py38.yml
+
+# Temporary work-around nc-config problem in conda-forge
+USER root
+RUN mkdir -p /home/conda/feedstock_root/build_artifacts/netcdf-fortran_1585602845013/_build_env && \
+    ln -s /home/liveuser/anaconda3/envs/py38/bin /home/conda/feedstock_root/build_artifacts/netcdf-fortran_1585602845013/_build_env/bin
+USER liveuser
 
 ## Set up default shell environment
 #RUN echo "conda activate py38" >> /home/liveuser/.bashrc
