@@ -83,3 +83,4 @@ dependencies:
         - opencv-contrib-python
 # Documentation
         - bibtexparser
+        - sphinxcontrib-matlabdomain
