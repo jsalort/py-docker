@@ -14,7 +14,7 @@ $ docker run -it jsalort/py:latest python
 
 Or, to run a Jupyter Lab instance:
 ```bash
-$ docker run -it -p 8888:8888 -v ${PWD}:/home/liveuser/workdir -w /home/liveuser/workdir jsalort/py:2019.10 jupyter lab --ip=0.0.0.0 --port 8888
+$ docker run -it -p 8888:8888 -v ${PWD}:/home/liveuser/workdir -w /home/liveuser/workdir jsalort/py:latest jupyter lab --ip=0.0.0.0 --port 8888
 ```
 or alternatively, use the provided `run_jupyter.sh` script, i.e.
 ```bash
