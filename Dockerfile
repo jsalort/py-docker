@@ -25,10 +25,14 @@ RUN apt install -y python3.8 python3.8-doc \
                    python3-ipywidgets python3-jupyter-console \
                    python3-jupyter-sphinx python3-nbconvert \
                    python3-nbformat python3-nbsphinx python3-notebook \
-                   python3-widgetsnbextension
+                   python3-widgetsnbextension python3-aiohttp \
+                   python3-aiohttp-jinja2 python3-sphinx-argparse \
+                   python3-sphinx-rtd-theme python3-sphinxcontrib.bibtex \
+                   python3-h5py python3-opencv python3-skimage python3-aiodns \
+                   python3-numba
 
 # Nodejs >= 12 is a dependency for jupyterlab build
-RUN apt install -y curl
+RUN apt install -y curl mercurial git
 RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh && \
     bash nodesource_setup.sh && \
     apt install -y nodejs
@@ -47,8 +51,19 @@ RUN source /home/liveuser/ve38/bin/activate && \
     python -m pip install notebook-as-pdf && \
     pyppeteer-install
 
-## Set up default shell environment
+# Set up default shell environment
 ENV VIRTUAL_ENV /home/liveuser/ve38
 ENV PATH /home/liveuser/ve38/bin:/usr/local/texlive/2021/bin/x86_64-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 RUN echo "source /home/liveuser/ve38/bin/activate" >> /home/liveuser/.bashrc
 ENV BASH_ENV "/home/liveuser/.bashrc"
+
+# Add fluiddyn and fluidlab from heptapod
+RUN hg clone https://foss.heptapod.net/fluiddyn/fluiddyn && \
+    cd /home/liveuser/fluiddyn && python setup.py install && \
+    cd /home/liveuser && rm -fr /home/liveuser/fluiddyn && \
+    hg clone https://foss.heptapod.net/fluiddyn/fluidlab && \
+    cd /home/liveuser/fluidlab && python setup.py install && \
+    cd /home/liveuser && rm -fr /home/liveuser/fluidlab
+
+# Additionnal modules
+RUN python -m pip install progressbar2 pyvisa pyvisa-py aioftp pre-commit pint numpy_groupies llc nptdms
