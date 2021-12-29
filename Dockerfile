@@ -59,11 +59,11 @@ ENV BASH_ENV "/home/liveuser/.bashrc"
 
 # Add fluiddyn and fluidlab from heptapod
 RUN hg clone https://foss.heptapod.net/fluiddyn/fluiddyn && \
-    cd /home/liveuser/fluiddyn && python setup.py install && \
-    cd /home/liveuser && rm -fr /home/liveuser/fluiddyn && \
+    python -m pip install ./fluiddyn && \
+    rm -fr /home/liveuser/fluiddyn && \
     hg clone https://foss.heptapod.net/fluiddyn/fluidlab && \
-    cd /home/liveuser/fluidlab && python setup.py install && \
-    cd /home/liveuser && rm -fr /home/liveuser/fluidlab
+    python -m pip install ./fluidlab && \
+    rm -fr /home/liveuser/fluidlab
 
 # Additionnal modules
 RUN python -m pip install progressbar2 pyvisa pyvisa-py aioftp pre-commit pint numpy_groupies llc nptdms
