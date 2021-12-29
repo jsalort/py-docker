@@ -11,7 +11,7 @@ RUN apt install -y libxcomposite1 libxcursor1 libxi6 libxtst6 libglib2.0-0 \
                    libnss3 libxss1 libxrandr2 libasound2 libpangocairo-1.0-0 \
                    libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0
 
-# Python 3.8 system packages
+# Python 3.9 system packages
 RUN apt install -y python3.9 python3.9-doc \
                    python3-arrow python3-babel python3-configargparse \
                    python3-cycler python3-dateutil python3-filelock \
@@ -58,6 +58,8 @@ RUN echo "source /home/liveuser/ve39/bin/activate" >> /home/liveuser/.bashrc
 ENV BASH_ENV "/home/liveuser/.bashrc"
 
 # Add fluiddyn and fluidlab from heptapod
+RUN echo 20211229
+RUN python -m pip install --upgrade pip
 RUN hg clone https://foss.heptapod.net/fluiddyn/fluiddyn && \
     python -m pip install ./fluiddyn && \
     rm -fr /home/liveuser/fluiddyn && \
