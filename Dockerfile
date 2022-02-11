@@ -29,7 +29,7 @@ RUN apt install -y python3.9 python3.9-doc \
                    python3-aiohttp-jinja2 python3-sphinx-argparse \
                    python3-sphinx-rtd-theme python3-sphinxcontrib.bibtex \
                    python3-h5py python3-opencv python3-skimage python3-aiodns \
-                   python3-numba
+                   python3-numba python3-aioftp pre-commit python3-pint
 
 # Nodejs >= 12 is a dependency for jupyterlab build
 RUN apt install -y curl mercurial git
@@ -43,6 +43,7 @@ SHELL ["/bin/bash", "-c"]
 
 RUN python3 -m venv --system-site-packages /home/liveuser/ve39
 RUN source /home/liveuser/ve39/bin/activate && \
+    python -m pip install --upgrade pip setuptools && \
     python -m pip install jupyterlab && \
     python -m ipykernel install --user && \
     jupyter lab build && \
@@ -56,10 +57,10 @@ ENV VIRTUAL_ENV /home/liveuser/ve39
 ENV PATH /home/liveuser/ve39/bin:/usr/local/texlive/2021/bin/x86_64-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 RUN echo "source /home/liveuser/ve39/bin/activate" >> /home/liveuser/.bashrc
 ENV BASH_ENV "/home/liveuser/.bashrc"
+ENV SETUPTOOLS_USE_DISTUTILS "stdlib"
 
 # Add fluiddyn and fluidlab from heptapod
-RUN echo 20211229
-RUN python -m pip install --upgrade pip
+RUN echo 20220211
 RUN hg clone https://foss.heptapod.net/fluiddyn/fluiddyn && \
     python -m pip install ./fluiddyn && \
     rm -fr /home/liveuser/fluiddyn && \
@@ -68,4 +69,4 @@ RUN hg clone https://foss.heptapod.net/fluiddyn/fluiddyn && \
     rm -fr /home/liveuser/fluidlab
 
 # Additionnal modules
-RUN python -m pip install progressbar2 pyvisa pyvisa-py aioftp pre-commit pint numpy_groupies llc nptdms
+RUN python -m pip install progressbar2 pyvisa pyvisa-py numpy_groupies llc nptdms
