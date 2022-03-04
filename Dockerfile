@@ -1,4 +1,4 @@
-FROM jsalort/texlive:latest
+FROM jsalort/texlive:latest AS base
 MAINTAINER Julien Salort, julien.salort@ens-lyon.fr
 
 # Install libGL (used by Jupyter lab)
@@ -54,10 +54,17 @@ RUN source /home/liveuser/ve39/bin/activate && \
 
 # Set up default shell environment
 ENV VIRTUAL_ENV /home/liveuser/ve39
-ENV PATH /home/liveuser/ve39/bin:/usr/local/texlive/2021/bin/x86_64-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 RUN echo "source /home/liveuser/ve39/bin/activate" >> /home/liveuser/.bashrc
 ENV BASH_ENV "/home/liveuser/.bashrc"
 ENV SETUPTOOLS_USE_DISTUTILS "stdlib"
+
+FROM base AS branch-amd64
+ENV PATH /home/liveuser/ve39/bin:/usr/local/texlive/2021/bin/x86_64-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+FROM base AS branch-arm64
+ENV PATH /home/liveuser/ve39/bin:/usr/local/texlive/2021/bin/aarch64-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+FROM branch-${TARGETARCH} as final
 
 # Add fluiddyn and fluidlab from heptapod
 RUN echo 20220211
