@@ -37,6 +37,8 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh && \
     bash nodesource_setup.sh && \
     apt install -y nodejs
 
+RUN apt install -y gfortran
+
 # Create virtualenv in liveuser home
 USER liveuser
 SHELL ["/bin/bash", "-c"]
@@ -59,15 +61,15 @@ ENV BASH_ENV "/home/liveuser/.bashrc"
 ENV SETUPTOOLS_USE_DISTUTILS "stdlib"
 
 FROM base AS branch-amd64
-ENV PATH /home/liveuser/ve39/bin:/usr/local/texlive/2021/bin/x86_64-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PATH /home/liveuser/ve39/bin:/usr/local/texlive/2022/bin/x86_64-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 FROM base AS branch-arm64
-ENV PATH /home/liveuser/ve39/bin:/usr/local/texlive/2021/bin/aarch64-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PATH /home/liveuser/ve39/bin:/usr/local/texlive/2022/bin/aarch64-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 FROM branch-${TARGETARCH} as final
 
-# Add fluiddyn and fluidlab from heptapod
-RUN echo 20220211
+# Add FluidDyn and FluidLab from Heptapod
+RUN echo 20220503
 RUN hg clone https://foss.heptapod.net/fluiddyn/fluiddyn && \
     python -m pip install ./fluiddyn && \
     rm -fr /home/liveuser/fluiddyn && \
@@ -75,9 +77,10 @@ RUN hg clone https://foss.heptapod.net/fluiddyn/fluiddyn && \
     python -m pip install ./fluidlab && \
     rm -fr /home/liveuser/fluidlab
 
+# Add pymanip from Github
+RUN git clone https://github.com/jsalort/pymanip.git && \
+    python -m pip install ./pymanip && \
+    rm -fr /home/liveuser/pymanip
+
 # Additionnal modules
 RUN python -m pip install progressbar2 pyvisa pyvisa-py numpy_groupies llc nptdms
-
-# Compilation chain
-USER root
-RUN apt install -y gfortran
