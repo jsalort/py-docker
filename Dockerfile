@@ -84,3 +84,6 @@ RUN git clone https://github.com/jsalort/pymanip.git && \
 
 # Additionnal modules
 RUN python -m pip install progressbar2 pyvisa pyvisa-py numpy_groupies llc nptdms
+
+# Upgrade additionnal modules
+RUN python -m pip install --upgrade sphinx
