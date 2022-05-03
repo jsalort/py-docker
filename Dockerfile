@@ -77,3 +77,7 @@ RUN hg clone https://foss.heptapod.net/fluiddyn/fluiddyn && \
 
 # Additionnal modules
 RUN python -m pip install progressbar2 pyvisa pyvisa-py numpy_groupies llc nptdms
+
+# Compilation chain
+USER root
+RUN apt install -y gfortran
