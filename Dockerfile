@@ -88,3 +88,4 @@ RUN python -m pip install progressbar2 pyvisa pyvisa-py numpy_groupies llc nptdm
 # Upgrade additionnal modules
 RUN python -m pip install --upgrade sphinx
 RUN python -m pip install --upgrade aiohttp_jinja2
+RUN python -m pip install --upgrade pint
