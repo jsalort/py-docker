@@ -3,6 +3,7 @@ MAINTAINER Julien Salort, julien.salort@ens-lyon.fr
 
 # Install libGL (used by Jupyter lab)
 USER root
+RUN echo 20220520
 RUN apt update && \
     apt install -y libgl1-mesa-dev
 
@@ -29,7 +30,8 @@ RUN apt install -y python3.9 python3.9-doc \
                    python3-aiohttp-jinja2 python3-sphinx-argparse \
                    python3-sphinx-rtd-theme python3-sphinxcontrib.bibtex \
                    python3-h5py python3-opencv python3-skimage python3-aiodns \
-                   python3-numba python3-aioftp pre-commit python3-pint
+                   python3-numba python3-aioftp pre-commit python3-pint \
+                   cython3
 
 # Nodejs >= 12 is a dependency for jupyterlab build
 RUN apt install -y curl mercurial git
