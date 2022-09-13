@@ -3,7 +3,7 @@ MAINTAINER Julien Salort, julien.salort@ens-lyon.fr
 
 # Install libGL (used by Jupyter lab)
 USER root
-RUN echo 20220520
+RUN echo 20220913
 RUN apt update && \
     apt install -y libgl1-mesa-dev
 
@@ -12,8 +12,8 @@ RUN apt install -y libxcomposite1 libxcursor1 libxi6 libxtst6 libglib2.0-0 \
                    libnss3 libxss1 libxrandr2 libasound2 libpangocairo-1.0-0 \
                    libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0
 
-# Python 3.9 system packages
-RUN apt install -y python3.9 python3.9-doc \
+# Python 3.10 system packages
+RUN apt install -y python3.10 python3.10-doc \
                    python3-arrow python3-babel python3-configargparse \
                    python3-cycler python3-dateutil python3-filelock \
                    python3-flake8 python3-flask python3-flask-babel \
@@ -45,8 +45,8 @@ RUN apt install -y gfortran
 USER liveuser
 SHELL ["/bin/bash", "-c"]
 
-RUN python3 -m venv --system-site-packages /home/liveuser/ve39
-RUN source /home/liveuser/ve39/bin/activate && \
+RUN python3 -m venv --system-site-packages /home/liveuser/ve310
+RUN source /home/liveuser/ve310/bin/activate && \
     python -m pip install --upgrade pip setuptools && \
     python -m pip install jupyterlab && \
     python -m ipykernel install --user && \
@@ -57,21 +57,21 @@ RUN source /home/liveuser/ve39/bin/activate && \
     pyppeteer-install
 
 # Set up default shell environment
-ENV VIRTUAL_ENV /home/liveuser/ve39
-RUN echo "source /home/liveuser/ve39/bin/activate" >> /home/liveuser/.bashrc
+ENV VIRTUAL_ENV /home/liveuser/ve310
+RUN echo "source /home/liveuser/ve310/bin/activate" >> /home/liveuser/.bashrc
 ENV BASH_ENV "/home/liveuser/.bashrc"
 ENV SETUPTOOLS_USE_DISTUTILS "stdlib"
 
 FROM base AS branch-amd64
-ENV PATH /home/liveuser/ve39/bin:/usr/local/texlive/2022/bin/x86_64-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PATH /home/liveuser/ve310/bin:/usr/local/texlive/2022/bin/x86_64-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 FROM base AS branch-arm64
-ENV PATH /home/liveuser/ve39/bin:/usr/local/texlive/2022/bin/aarch64-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PATH /home/liveuser/ve310/bin:/usr/local/texlive/2022/bin/aarch64-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 FROM branch-${TARGETARCH} as final
 
 # Add FluidDyn and FluidLab from Heptapod
-RUN echo 20220503
+RUN echo 20220913
 RUN hg clone https://foss.heptapod.net/fluiddyn/fluiddyn && \
     python -m pip install ./fluiddyn && \
     rm -fr /home/liveuser/fluiddyn && \
