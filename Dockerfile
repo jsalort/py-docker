@@ -91,3 +91,15 @@ RUN python -m pip install progressbar2 pyvisa pyvisa-py numpy_groupies llc nptdm
 RUN python -m pip install --upgrade sphinx
 RUN python -m pip install --upgrade aiohttp_jinja2
 RUN python -m pip install --upgrade pint
+
+# Install CoolProp from GitHub
+RUN echo 20220928
+RUN git clone --recursive https://github.com/coolprop/coolprop.git && \
+    python -m pip install /home/liveuser/coolprop/wrappers/Python && \
+    rm -fr /home/liveuser/coolprop
+
+# Add pyciv from Gitlab
+RUN echo 20220928
+RUN git clone https://gitlab.salort.eu/jsalort/pyciv.git && \
+    python -m pip install /home/liveuser/pyciv && \
+    rm -fr /home/liveuser/pyciv
