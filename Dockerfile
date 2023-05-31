@@ -99,7 +99,7 @@ RUN git clone --recursive https://github.com/coolprop/coolprop.git && \
     rm -fr /home/liveuser/coolprop
 
 # Add pyciv from Gitlab
-RUN echo 20230202
+RUN echo 20230531
 RUN git clone https://gitlab.salort.eu/jsalort/pyciv.git && \
     python -m pip install /home/liveuser/pyciv && \
     rm -fr /home/liveuser/pyciv
