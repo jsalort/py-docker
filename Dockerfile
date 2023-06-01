@@ -10,7 +10,8 @@ RUN apt update && \
 # Dependencies for Chromium (used by the betatim/notebook-as-pdf extension)
 RUN apt install -y libxcomposite1 libxcursor1 libxi6 libxtst6 libglib2.0-0 \
                    libnss3 libxss1 libxrandr2 libasound2 libpangocairo-1.0-0 \
-                   libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0
+                   libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0 gfortran \
+                   curl mercurial git
 
 # Python 3.10 system packages
 RUN apt install -y python3.10 python3.10-doc \
@@ -33,13 +34,10 @@ RUN apt install -y python3.10 python3.10-doc \
                    python3-numba python3-aioftp pre-commit python3-pint \
                    cython3
 
-# Nodejs >= 12 is a dependency for jupyterlab build
-RUN apt install -y curl mercurial git
-RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh && \
+# Nodejs >= 18 is a dependency for jupyterlab build
+RUN curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh && \
     bash nodesource_setup.sh && \
     apt install -y nodejs
-
-RUN apt install -y gfortran
 
 # Create virtualenv in liveuser home
 USER liveuser
@@ -51,7 +49,6 @@ RUN source /home/liveuser/ve310/bin/activate && \
     python -m pip install jupyterlab && \
     python -m ipykernel install --user && \
     jupyter lab build && \
-    jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
     jupyter labextension install jupyter-matplotlib && \
     python -m pip install notebook-as-pdf && \
     pyppeteer-install
@@ -71,7 +68,7 @@ ENV PATH /home/liveuser/ve310/bin:/usr/local/texlive/2022/bin/aarch64-linux:/usr
 FROM branch-${TARGETARCH} as final
 
 # Add FluidDyn and FluidLab from Heptapod
-RUN echo 20220913
+RUN echo 20230531
 RUN hg clone https://foss.heptapod.net/fluiddyn/fluiddyn && \
     python -m pip install ./fluiddyn && \
     rm -fr /home/liveuser/fluiddyn && \
