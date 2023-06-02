@@ -60,6 +60,7 @@ ENV BASH_ENV "/home/liveuser/.bashrc"
 ENV SETUPTOOLS_USE_DISTUTILS "stdlib"
 ENV OMP_NUM_THREADS "1"
 ENV QT_QPA_PLATFORM "offscreen"
+ENV XDG_RUNTIME_DIR "/tmp/runtime-liveuser"
 
 FROM base AS branch-amd64
 ENV PATH /home/liveuser/ve310/bin:/usr/local/texlive/2022/bin/x86_64-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
@@ -78,9 +79,11 @@ RUN python -m pip install --upgrade sphinx
 RUN python -m pip install --upgrade aiohttp_jinja2
 RUN python -m pip install --upgrade pint
 RUN python -m pip install --upgrade sqlalchemy
+RUN python -m pip install --upgrade transonic
+RUN python -m pip install --upgrade numba
 
 # Add FluidDyn, FluidLab and FluidImage from Heptapod
-RUN echo 20230531
+RUN echo 20230602
 RUN hg clone https://foss.heptapod.net/fluiddyn/fluiddyn && \
     python -m pip install ./fluiddyn && \
     rm -fr /home/liveuser/fluiddyn && \
@@ -97,7 +100,9 @@ RUN git clone https://github.com/jsalort/pymanip.git && \
     rm -fr /home/liveuser/pymanip
 
 # Add pyciv from Gitlab
-RUN echo 20230531
 RUN git clone https://gitlab.salort.eu/jsalort/pyciv.git && \
     python -m pip install /home/liveuser/pyciv && \
     rm -fr /home/liveuser/pyciv
+
+# Additionnal upgrade
+RUN python -m pip install --upgrade numpy
