@@ -58,6 +58,8 @@ ENV VIRTUAL_ENV /home/liveuser/ve310
 RUN echo "source /home/liveuser/ve310/bin/activate" >> /home/liveuser/.bashrc
 ENV BASH_ENV "/home/liveuser/.bashrc"
 ENV SETUPTOOLS_USE_DISTUTILS "stdlib"
+ENV OMP_NUM_THREADS "1"
+ENV QT_QPA_PLATFORM "offscreen"
 
 FROM base AS branch-amd64
 ENV PATH /home/liveuser/ve310/bin:/usr/local/texlive/2022/bin/x86_64-linux:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
@@ -67,33 +69,32 @@ ENV PATH /home/liveuser/ve310/bin:/usr/local/texlive/2022/bin/aarch64-linux:/usr
 
 FROM branch-${TARGETARCH} as final
 
-# Add FluidDyn and FluidLab from Heptapod
+# Install Additionnal modules
+RUN python -m pip install coolprop
+RUN python -m pip install progressbar2 pyvisa pyvisa-py numpy_groupies llc nptdms pyqt5
+
+# Upgrade additionnal modules
+RUN python -m pip install --upgrade sphinx
+RUN python -m pip install --upgrade aiohttp_jinja2
+RUN python -m pip install --upgrade pint
+RUN python -m pip install --upgrade sqlalchemy
+
+# Add FluidDyn, FluidLab and FluidImage from Heptapod
 RUN echo 20230531
 RUN hg clone https://foss.heptapod.net/fluiddyn/fluiddyn && \
     python -m pip install ./fluiddyn && \
     rm -fr /home/liveuser/fluiddyn && \
     hg clone https://foss.heptapod.net/fluiddyn/fluidlab && \
     python -m pip install ./fluidlab && \
-    rm -fr /home/liveuser/fluidlab
+    rm -fr /home/liveuser/fluidlab && \
+    hg clone https://foss.heptapod.net/fluiddyn/fluidimage && \
+    python -m pip install ./fluidimage && \
+    rm -fr /home/liveuser/fluidimage
 
 # Add pymanip from Github
 RUN git clone https://github.com/jsalort/pymanip.git && \
     python -m pip install ./pymanip && \
     rm -fr /home/liveuser/pymanip
-
-# Additionnal modules
-RUN python -m pip install progressbar2 pyvisa pyvisa-py numpy_groupies llc nptdms
-
-# Upgrade additionnal modules
-RUN python -m pip install --upgrade sphinx
-RUN python -m pip install --upgrade aiohttp_jinja2
-RUN python -m pip install --upgrade pint
-
-# Install CoolProp from GitHub
-RUN echo 20220928
-RUN git clone --recursive https://github.com/coolprop/coolprop.git && \
-    python -m pip install /home/liveuser/coolprop/wrappers/Python && \
-    rm -fr /home/liveuser/coolprop
 
 # Add pyciv from Gitlab
 RUN echo 20230531
