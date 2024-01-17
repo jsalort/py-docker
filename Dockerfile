@@ -94,7 +94,7 @@ RUN git clone https://github.com/jsalort/pymanip.git && \
     rm -fr /home/liveuser/pymanip
 
 # Add pyciv from Gitlab
+RUN echo Update 17/01/2024
 RUN git clone https://gitlab.salort.eu/jsalort/pyciv.git && \
-    python -m pip install /home/liveuser/pyciv/civx_fc && \
-    python -m pip install /home/liveuser/pyciv/pyciv && \
+    python -m pip install /home/liveuser/pyciv && \
     rm -fr /home/liveuser/pyciv
