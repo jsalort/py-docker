@@ -11,7 +11,7 @@ RUN apt update && \
 RUN apt install -y libxcomposite1 libxcursor1 libxi6 libxtst6 libglib2.0-0 \
                    libnss3 libxss1 libxrandr2 libasound2-dev libpangocairo-1.0-0 \
                    libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0 gfortran \
-                   curl mercurial git meson libhdf5-dev pkg-config
+                   curl mercurial git meson libhdf5-dev pkg-config libopencv-contrib-dev
 
 # Dependencies custom built pyFFTW
 RUN apt install -y libfftw3-dev libfftw3-double3 libfftw3-long3 libfftw3-single3 libfftw3-bin
@@ -38,15 +38,19 @@ RUN curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf > rust.sh
 RUN sh rust.sh -y
 RUN rm rust.sh
 RUN echo ". $HOME/.cargo/env" >> /home/liveuser/.bashrc
+ENV OPENCV_LINK_LIBS="opencv_core,opencv_imgcodecs,opencv_imgproc,opencv_xphoto"
+ENV OPENCV_INCLUDE_PATHS=/usr/include/opencv4
 
 # Nodejs >= 20.0.0
 FROM base AS branch-amd64
 RUN curl https://nodejs.org/dist/v20.15.1/node-v20.15.1-linux-x64.tar.xz -sSf > node.tar.xz
 ENV PATH=/home/liveuser/.cargo/bin:/home/liveuser/ve312/bin:/usr/local/texlive/2024/bin/x86_64-linux:/home/liveuser/node-v20.15.1-linux-x64:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV OPENCV_LINK_PATHS=/usr/lib/x86_64-linux-gnu
 
 FROM base AS branch-arm64
 RUN curl https://nodejs.org/dist/v20.15.1/node-v20.15.1-linux-arm64.tar.xz -sSf > node.tar.xz
 ENV PATH=/home/liveuser/.cargo/bin:/home/liveuser/ve312/bin:/usr/local/texlive/2024/bin/aarch64-linux:/home/liveuser/node-v20.15.1-linux-arm64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV OPENCV_LINK_PATHS=/usr/lib/aarch64-linux-gnu
 
 FROM branch-${TARGETARCH} AS final
 
