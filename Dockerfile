@@ -10,7 +10,7 @@ RUN apt update && \
 # Dependencies for Chromium (used by the betatim/notebook-as-pdf extension)
 RUN apt install -y libxcomposite1 libxcursor1 libxi6 libxtst6 libglib2.0-0 \
                    libnss3 libxss1 libxrandr2 libasound2-dev libpangocairo-1.0-0 \
-                   libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0 gfortran \
+                   libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0 gfortran clang \
                    curl mercurial git meson libhdf5-dev pkg-config libopencv-contrib-dev
 
 # Dependencies custom built pyFFTW
