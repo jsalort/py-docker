@@ -64,3 +64,6 @@ RUN uv pip install git+https://gitlab.salort.eu/jsalort/asyncsession.git
 RUN uv pip install git+https://gitlab.salort.eu/jsalort/imageacquisition.git
 
 ENTRYPOINT [""]
+
+# 2025-02-12: j'ajoute texlive qui manque dans le PATH
+ENV PATH=/usr/local/texlive/2024/bin/x86_64-linux:/home/ubuntu/.cargo/bin:/home/ubuntu/.venv/py312/bin:/home/ubuntu/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
