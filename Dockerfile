@@ -60,8 +60,7 @@ RUN pyppeteer-install
 
 RUN uv pip install git+https://github.com/jsalort/pymanip.git
 RUN uv pip install git+https://gitlab.salort.eu/jsalort/pyciv.git
-RUN uv pip install git+https://gitlab.salort.eu/jsalort/asyncsession.git
-RUN uv pip install git+https://gitlab.salort.eu/jsalort/imageacquisition.git
+RUN uv pip install git+https://gitlab.salort.eu/jsalort/manip.git
 
 ENTRYPOINT [""]
 
