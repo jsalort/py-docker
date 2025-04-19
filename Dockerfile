@@ -44,7 +44,7 @@ RUN sh rust.sh -y
 RUN rm rust.sh
 RUN echo ". $HOME/.cargo/env" >> /home/ubuntu/.bashrc
 ENV OPENCV_LINK_LIBS="opencv_core,opencv_imgcodecs,opencv_imgproc,opencv_xphoto"
-ENV OPENCV_INCLUDE_PATHS=/usr/include/opencv4
+ENV OPENCV_INCLUDE_PATHS=/usr/include/opencv4,/usr/include/x86_64-linux-gnu/opencv4
 ENV OPENCV_LINK_PATHS=/usr/lib/x86_64-linux-gnu
 ENV PATH=/home/ubuntu/.cargo/bin:/home/ubuntu/.venv/py312/bin:/home/ubuntu/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
