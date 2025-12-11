@@ -1,9 +1,9 @@
-FROM sharelatex/sharelatex:5.3.1-with-texlive-full
+FROM sharelatex/sharelatex:6.0.1-with-texlive-full
 LABEL org.opencontainers.image.authors="julien.salort@ens-lyon.fr"
 
 # Install libGL (used by Jupyter lab)
 USER root
-RUN echo 2025-02-06
+RUN echo 2025-12-11
 RUN apt update && \
     apt install -y libgl1-mesa-dev
 
@@ -25,18 +25,18 @@ WORKDIR /home/ubuntu
 # uv
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 RUN cd /home/ubuntu && . /home/ubuntu/.local/bin/env && \
-    uv python install 3.12 && \
-    uv venv --python 3.12 /home/ubuntu/.venv/py312
+    uv python install 3.13 && \
+    uv venv --python 3.13 /home/ubuntu/.venv/py313
 
-ENV VIRTUAL_ENV=/home/ubuntu/.venv/py312
-ENV PKG_CONFIG_PATH=/home/ubuntu/.local/share/uv/python/cpython-3.12.9-linux-x86_64-gnu/lib/pkgconfig
-RUN echo "source /home/ubuntu/.venv/py312/bin/activate" >> /home/ubuntu/.bashrc
+ENV VIRTUAL_ENV=/home/ubuntu/.venv/py313
+ENV PKG_CONFIG_PATH=/home/ubuntu/.local/share/uv/python/cpython-3.13.11-linux-x86_64-gnu/lib/pkgconfig
+RUN echo "source /home/ubuntu/.venv/py313/bin/activate" >> /home/ubuntu/.bashrc
 ENV BASH_ENV="/home/ubuntu/.bashrc"
 ENV OMP_NUM_THREADS="1"
 ENV QT_QPA_PLATFORM="offscreen"
 ENV XDG_RUNTIME_DIR="/tmp/runtime-ubuntu"
-ENV PS1="(py312) \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\u@\h:\w\$"
-ENV PATH=/home/ubuntu/.venv/py312/bin:/home/ubuntu/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PS1="(py313) \[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\u@\h:\w\$"
+ENV PATH=/home/ubuntu/.venv/py313/bin:/home/ubuntu/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Rust
 RUN curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf > rust.sh
@@ -46,7 +46,7 @@ RUN echo ". $HOME/.cargo/env" >> /home/ubuntu/.bashrc
 ENV OPENCV_LINK_LIBS="opencv_core,opencv_imgcodecs,opencv_imgproc,opencv_xphoto"
 ENV OPENCV_INCLUDE_PATHS=/usr/include/opencv4,/usr/include/x86_64-linux-gnu/opencv4
 ENV OPENCV_LINK_PATHS=/usr/lib/x86_64-linux-gnu
-ENV PATH=/home/ubuntu/.cargo/bin:/home/ubuntu/.venv/py312/bin:/home/ubuntu/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PATH=/home/ubuntu/.cargo/bin:/home/ubuntu/.venv/py313/bin:/home/ubuntu/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Install Additionnal Python modules
 RUN uv pip install jupyter jupyterlab ipykernel ipympl notebook-as-pdf maturin meson ninja pip tabulate meson-python \
@@ -64,13 +64,14 @@ RUN uv pip install git+https://gitlab.salort.eu/jsalort/manip.git
 
 ENTRYPOINT [""]
 
-# 2025-02-12: j'ajoute texlive qui manque dans le PATH
-ENV PATH=/usr/local/texlive/2024/bin/x86_64-linux:/home/ubuntu/.cargo/bin:/home/ubuntu/.venv/py312/bin:/home/ubuntu/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PATH=/usr/local/texlive/2025/bin/x86_64-linux:/home/ubuntu/.cargo/bin:/home/ubuntu/.venv/py313/bin:/home/ubuntu/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 USER root
-RUN /usr/local/texlive/2024/bin/x86_64-linux/luaotfload-tool -u
+RUN /usr/local/texlive/2025/bin/x86_64-linux/luaotfload-tool -u
 
 USER ubuntu
-RUN mkdir -p /home/ubuntu/.cache/texlive2024
-ENV TEXMFHOME=/home/ubuntu/.cache/texlive2024
-ENV TEXMFVAR=/home/ubuntu/.cache/texlive2024/texmf-var/
-RUN /usr/local/texlive/2024/bin/x86_64-linux/luaotfload-tool -u
+RUN mkdir -p /home/ubuntu/.cache/texlive2025
+ENV TEXMFHOME=/home/ubuntu/.cache/texlive2025
+ENV TEXMFVAR=/home/ubuntu/.cache/texlive2025/texmf-var/
+RUN /usr/local/texlive/2025/bin/x86_64-linux/luaotfload-tool -u
+
+RUN cargo install --locked typst-cli
